@@ -1,0 +1,58 @@
+.ttt-container{
+    /* margin: 2em; */
+    width: 25%;
+    margin-left: 37%;
+    margin-top: 2rem;
+}
+.ttt-score-board{
+    display: flex;
+    margin-left: 42%;
+    margin-top: 1rem;
+}
+mat-chip-list{
+    margin-left: 2em;
+    margin-right: 2em;
+}
+/* .border{
+    border-style: solid;
+  border-width: medium;
+} */
+mat-grid-tile{
+    border-style: solid;
+  border-width: medium;
+
+}
+mat-chip{
+  font-size: x-large;
+  padding: 18.5px;
+}
+.player1Bg{
+  background: #ff4081;
+}
+.Player2Bg{
+  background: lightblue;
+}
+/* .game-over{
+  margin-left: 4%;
+  margin-top: 5%;
+  font-weight: 500;
+  text-align: center;
+} */
+.game-status{
+  width: fit-content;
+    margin-left: 12%;
+    margin-top: 10%;
+    position: absolute;
+    font-size: 2rem;
+}
+.game-status > h3{
+  font-size: x-large;
+  text-align: center;
+}
+.reset-button{
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 1.4em;
+  padding-right: 1.4em;
+  margin: 1rem;
+}

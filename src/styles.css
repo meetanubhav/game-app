@@ -15,3 +15,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /* Rules for using icons as white on a dark background. */
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+.mr-1{
+    margin-right: 1em;
+}
+.mt-3{
+    margin-top: 3em;
+}

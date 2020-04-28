@@ -1,0 +1,58 @@
+<h1  class="ttt-score-board">
+  You  
+  <mat-chip-list>
+    <mat-chip> {{scoreBoard[0]}}   -    {{scoreBoard[1]}} </mat-chip>
+  </mat-chip-list>
+  AI
+</h1>
+<div *ngIf="!isGameOver; then showTurn else showStatus"></div> 
+
+<ng-template #showTurn>
+  <div class="game-status">
+    <h3>{{ player }} Turn</h3>
+  </div>
+</ng-template>
+<ng-template #showStatus>
+  <div class="game-status">
+    <h3>GAME OVER</h3>
+    <button class="reset-button" (click)="reset()" mat-raised-button  color="primary"> Play Again</button>
+  </div>
+</ng-template>
+
+<div class="ttt-container">
+  <mat-grid-list cols="3" rowHeight="1:1" class="border">
+    <div *ngFor="let index of [0,1,2,3,4,5,6,7,8]">
+      <mat-grid-tile (click)="move(index)" 
+      [ngClass]="{'player1Bg':(boardValues[index] === 1),'player2Bg':(boardValues[index] === 5)}">
+        <i class="material-icons md-48">{{ myicon[index] }}</i>
+      </mat-grid-tile>
+    </div>
+    <!-- <mat-grid-tile (click)="move(1)" [ngClass]="{'player1Bg':(boardValues[1] == 1)}">
+
+    </mat-grid-tile>
+    <mat-grid-tile (click)="move(2)" [ngClass]="{'player1Bg':(boardValues[2] == 1)}">
+
+    </mat-grid-tile>
+    <mat-grid-tile (click)="move(3)" [ngClass]="{'player1Bg':(boardValues[3] == 1)}">
+
+    </mat-grid-tile>
+    <mat-grid-tile (click)="move(4)" [ngClass]="{'player1Bg':(boardValues[4] == 1)}">
+
+    </mat-grid-tile>
+    <mat-grid-tile (click)="move(5)" [ngClass]="{'player1Bg':(boardValues[5] == 1)}">
+
+    </mat-grid-tile>
+    <mat-grid-tile (click)="move(6)" [ngClass]="{'player1Bg':(boardValues[6] == 1)}">
+
+    </mat-grid-tile>
+    <mat-grid-tile (click)="move(7)" [ngClass]="{'player1Bg':(boardValues[7] == 1)}">
+
+    </mat-grid-tile>
+    <mat-grid-tile (click)="move(8)" [ngClass]="{'player1Bg':(boardValues[8] == 1)}">
+
+    </mat-grid-tile> -->
+  </mat-grid-list>
+  <div class="game-over">
+    
+  </div>
+</div>

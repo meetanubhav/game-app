@@ -1,16 +1,17 @@
+<h1 class="rps-heading">ROCK PAPER SCISSOR</h1>
 <div class="container">
   <!-- Player 1 -->
   <mat-card class="mr-1">     
     <mat-card-content>
         <div class="child-container">
           <h2>  You</h2>
-          <button mat-fab color="primary" class="score"> 0 </button>
+          <button mat-fab color="primary" class="score"> {{scoreBoard[0]}} </button>
         </div>
        <h3> Choose your weapon: </h3>
        <div  class="icon-container">
-         <i class="fa fa-hand-rock-o"></i>
-         <i class="fa fa-hand-paper-o"></i>
-         <i class="fa fa-hand-scissors-o"></i>
+         <i (click)="move(0)" [ngClass]="{'selectedWeapon':(this.player1Choice === 0)}" class="fa fa-hand-rock-o"></i>
+         <i (click)="move(1)" [ngClass]="{'selectedWeapon':(this.player1Choice === 1)}" class="fa fa-hand-paper-o"></i>
+         <i (click)="move(2)" [ngClass]="{'selectedWeapon':(this.player1Choice === 2)}" class="fa fa-hand-scissors-o"></i>
       </div>         
     </mat-card-content>
   </mat-card>
@@ -18,13 +19,29 @@
   <mat-card>
     <div class="child-container">
       <h2>  Player 2</h2>
-      <button mat-fab color="accent" class="score">0</button>
+      <button mat-fab color="accent" class="score"> {{scoreBoard[1]}} </button>
     </div>
   <div class="icon-container mt-3" >
-    <i class="fa fa-hand-rock-o"></i>
-    <i class="fa fa-hand-paper-o" ></i>
-    <i class="fa fa-hand-scissors-o" ></i>           
+    <i [ngClass]="{'selectedWeapon':(player2Choice === 0)}" class="fa fa-hand-rock-o"></i>
+    <i [ngClass]="{'selectedWeapon':(player2Choice === 1)}" class="fa fa-hand-paper-o" ></i>
+    <i [ngClass]="{'selectedWeapon':(player2Choice === 2)}" class="fa fa-hand-scissors-o" ></i>           
   </div>
   </mat-card>
   
+</div>
+<div *ngIf="!loading && isResultShow" class="result-container">
+  <!-- <div [ngSwitch]="result">
+    {{resultMessage}}
+    <ng-template [ngSwitchCase]= "0"> <h1> You're the winner! </h1></ng-template>
+    <ng-template [ngSwitchCase]= "1"> <h1> You lose. </h1> </ng-template>
+    <ng-template [ngSwitchCase]= "2"> <h1>It's a tie! </h1> </ng-template>
+    <ng-template ngSwitchDefault> </ng-template>
+  </div>  -->
+  <h1> {{ resultMessage }} </h1>
+  <p> Pick again to continue or </p>
+  <button  (click)="reset()" mat-raised-button  color="primary"> Reset score</button>
+</div>
+
+<div class="result-container" *ngIf="loading">
+  <mat-spinner></mat-spinner>
 </div>

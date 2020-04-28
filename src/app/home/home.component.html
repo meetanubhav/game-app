@@ -1,17 +1,30 @@
-<mat-card class="example-card">
-  <mat-card-header>
-    <mat-card-title>
-      <h3>
-        ROCK PAPER SCISSOR
-      </h3>
-    </mat-card-title>
-  </mat-card-header>
-  <img mat-card-image src="https://i.pinimg.com/originals/c9/70/70/c9707024e45d62503a8f13e87f60482a.jpg" alt="Rock Paper Scissor Image">
-  <!-- <mat-card-content>
-    <p>
-    </p>
-  </mat-card-content> -->
-  <mat-card-actions>
-    <button mat-raised-button color="primary" [routerLink]="['/rock-paper-scissor']">Play</button>
-  </mat-card-actions>
-</mat-card>
+<div class="flex-box">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>
+        <h3>
+          ROCK PAPER SCISSOR
+        </h3>
+      </mat-card-title>
+    </mat-card-header>
+    <img mat-card-lg-image src="../../assets/Image/rps_game.JPG" alt="Rock Paper Scissor Image">
+    <mat-card-actions>
+      <button mat-raised-button color="primary" [routerLink]="['/rock-paper-scissor']">Play</button>
+    </mat-card-actions>
+  </mat-card>
+  
+  <!-- second game -->
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>
+        <h3>
+          TIC TAC TOE
+        </h3>
+      </mat-card-title>
+    </mat-card-header>
+    <img mat-card-lg-image src="../../assets/Image/ttt_game.JPG" alt="Rock Paper Scissor Image">
+    <mat-card-actions>
+      <button mat-raised-button color="primary" [routerLink]="['/tic-tac-toe']">Play</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

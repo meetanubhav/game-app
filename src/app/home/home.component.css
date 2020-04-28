@@ -1,9 +1,14 @@
 .example-card{
-    max-width: 18em;
-    max-height: 25em;
-    margin-right: 1em;
-    margin-top: 1em;
+  max-width: 30%;
+  width: 30%;
+  text-align: center;
+  margin: 1em;
 }
-.play-button{
-  align-items: center;
+h3{
+  font-weight: 400;
+    font-size: larger;
+    text-align: center;
+}
+.flex-box{
+  display: flex;
 }
