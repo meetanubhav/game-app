@@ -1,0 +1,9 @@
+.example-card{
+    max-width: 18em;
+    max-height: 25em;
+    margin-right: 1em;
+    margin-top: 1em;
+}
+.play-button{
+  align-items: center;
+}
