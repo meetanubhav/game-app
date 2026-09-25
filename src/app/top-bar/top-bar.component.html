@@ -1,6 +1,11 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <i class="material-icons md-36">videogame_asset</i>
-        <a [routerLink]="['/']">GAMES.IO</a>
-  </mat-toolbar-row>
+<mat-toolbar color="primary" class="top-bar">
+  <a class="brand" [routerLink]="['/']">
+    <i class="material-icons">videogame_asset</i>
+    <span>GAMES.IO</span>
+  </a>
+  <span class="spacer"></span>
+  <nav>
+    <a [routerLink]="['/rock-paper-scissor']" routerLinkActive="active">Rock Paper Scissors</a>
+    <a [routerLink]="['/tic-tac-toe']" routerLinkActive="active">Tic Tac Toe</a>
+  </nav>
 </mat-toolbar>

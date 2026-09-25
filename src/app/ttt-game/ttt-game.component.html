@@ -1,58 +1,63 @@
-<h1  class="ttt-score-board">
-  You  
-  <mat-chip-list>
-    <mat-chip> {{scoreBoard[0]}}   -    {{scoreBoard[1]}} </mat-chip>
-  </mat-chip-list>
-  AI
-</h1>
-<div *ngIf="!isGameOver; then showTurn else showStatus"></div> 
+<section class="page">
+  <header class="page-header">
+    <a class="back" [routerLink]="['/']"><i class="material-icons">arrow_back</i> All games</a>
+    <h1>Tic Tac Toe</h1>
+    <p class="subtitle">Three in a row wins. The AI uses minimax search — try beating it on Hard.</p>
+  </header>
 
-<ng-template #showTurn>
-  <div class="game-status">
-    <h3>{{ player }} Turn</h3>
-  </div>
-</ng-template>
-<ng-template #showStatus>
-  <div class="game-status">
-    <h3>GAME OVER</h3>
-    <button class="reset-button" (click)="reset()" mat-raised-button  color="primary"> Play Again</button>
-  </div>
-</ng-template>
-
-<div class="ttt-container">
-  <mat-grid-list cols="3" rowHeight="1:1" class="border">
-    <div *ngFor="let index of [0,1,2,3,4,5,6,7,8]">
-      <mat-grid-tile (click)="move(index)" 
-      [ngClass]="{'player1Bg':(boardValues[index] === 1),'player2Bg':(boardValues[index] === 5)}">
-        <i class="material-icons md-48">{{ myicon[index] }}</i>
-      </mat-grid-tile>
+  <div class="scoreboard">
+    <div class="score-item you">
+      <span class="label">You (X)</span>
+      <span class="value">{{ score.human }}</span>
     </div>
-    <!-- <mat-grid-tile (click)="move(1)" [ngClass]="{'player1Bg':(boardValues[1] == 1)}">
-
-    </mat-grid-tile>
-    <mat-grid-tile (click)="move(2)" [ngClass]="{'player1Bg':(boardValues[2] == 1)}">
-
-    </mat-grid-tile>
-    <mat-grid-tile (click)="move(3)" [ngClass]="{'player1Bg':(boardValues[3] == 1)}">
-
-    </mat-grid-tile>
-    <mat-grid-tile (click)="move(4)" [ngClass]="{'player1Bg':(boardValues[4] == 1)}">
-
-    </mat-grid-tile>
-    <mat-grid-tile (click)="move(5)" [ngClass]="{'player1Bg':(boardValues[5] == 1)}">
-
-    </mat-grid-tile>
-    <mat-grid-tile (click)="move(6)" [ngClass]="{'player1Bg':(boardValues[6] == 1)}">
-
-    </mat-grid-tile>
-    <mat-grid-tile (click)="move(7)" [ngClass]="{'player1Bg':(boardValues[7] == 1)}">
-
-    </mat-grid-tile>
-    <mat-grid-tile (click)="move(8)" [ngClass]="{'player1Bg':(boardValues[8] == 1)}">
-
-    </mat-grid-tile> -->
-  </mat-grid-list>
-  <div class="game-over">
-    
+    <div class="score-item draw">
+      <span class="label">Draws</span>
+      <span class="value">{{ score.draw }}</span>
+    </div>
+    <div class="score-item ai">
+      <span class="label">AI (O)</span>
+      <span class="value">{{ score.ai }}</span>
+    </div>
   </div>
-</div>
+
+  <div class="controls">
+    <div class="control-group">
+      <span class="control-label">Difficulty</span>
+      <div class="segmented">
+        <button *ngFor="let d of difficulties" type="button"
+                [class.active]="difficulty === d.value"
+                (click)="setDifficulty(d.value)">{{ d.label }}</button>
+      </div>
+    </div>
+    <div class="control-group">
+      <span class="control-label">First move</span>
+      <div class="segmented">
+        <button type="button" [class.active]="humanStarts" (click)="setFirstPlayer(true)">You</button>
+        <button type="button" [class.active]="!humanStarts" (click)="setFirstPlayer(false)">AI</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="status" [ngClass]="status" aria-live="polite">
+    <span class="dot"></span>{{ message }}
+  </div>
+
+  <div class="board" [class.locked]="status !== 'human'">
+    <button *ngFor="let i of cells" type="button" class="cell"
+            [ngClass]="{ x: board[i] === 'X', o: board[i] === 'O',
+                         win: isWinningCell(i), last: lastMove === i,
+                         dim: status === 'over' && winLine.length && !isWinningCell(i) }"
+            [disabled]="board[i] !== null || status !== 'human'"
+            [attr.aria-label]="'Cell ' + (i + 1) + (board[i] ? ', ' + board[i] : ', empty')"
+            (click)="play(i)">
+      <span *ngIf="board[i]" class="mark">{{ board[i] }}</span>
+    </button>
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="newRound()">
+      {{ status === 'over' ? 'Play again' : 'Restart round' }}
+    </button>
+    <button mat-button (click)="resetScore()">Reset score</button>
+  </div>
+</section>

@@ -1,47 +1,115 @@
-<h1 class="rps-heading">ROCK PAPER SCISSOR</h1>
-<div class="container">
-  <!-- Player 1 -->
-  <mat-card class="mr-1">     
-    <mat-card-content>
-        <div class="child-container">
-          <h2>  You</h2>
-          <button mat-fab color="primary" class="score"> {{scoreBoard[0]}} </button>
-        </div>
-       <h3> Choose your weapon: </h3>
-       <div  class="icon-container">
-         <i (click)="move(0)" [ngClass]="{'selectedWeapon':(this.player1Choice === 0)}" class="fa fa-hand-rock-o"></i>
-         <i (click)="move(1)" [ngClass]="{'selectedWeapon':(this.player1Choice === 1)}" class="fa fa-hand-paper-o"></i>
-         <i (click)="move(2)" [ngClass]="{'selectedWeapon':(this.player1Choice === 2)}" class="fa fa-hand-scissors-o"></i>
-      </div>         
-    </mat-card-content>
-  </mat-card>
-<!-- Player 2 -->
-  <mat-card>
-    <div class="child-container">
-      <h2>  Player 2</h2>
-      <button mat-fab color="accent" class="score"> {{scoreBoard[1]}} </button>
-    </div>
-  <div class="icon-container mt-3" >
-    <i [ngClass]="{'selectedWeapon':(player2Choice === 0)}" class="fa fa-hand-rock-o"></i>
-    <i [ngClass]="{'selectedWeapon':(player2Choice === 1)}" class="fa fa-hand-paper-o" ></i>
-    <i [ngClass]="{'selectedWeapon':(player2Choice === 2)}" class="fa fa-hand-scissors-o" ></i>           
-  </div>
-  </mat-card>
-  
-</div>
-<div *ngIf="!loading && isResultShow" class="result-container">
-  <!-- <div [ngSwitch]="result">
-    {{resultMessage}}
-    <ng-template [ngSwitchCase]= "0"> <h1> You're the winner! </h1></ng-template>
-    <ng-template [ngSwitchCase]= "1"> <h1> You lose. </h1> </ng-template>
-    <ng-template [ngSwitchCase]= "2"> <h1>It's a tie! </h1> </ng-template>
-    <ng-template ngSwitchDefault> </ng-template>
-  </div>  -->
-  <h1> {{ resultMessage }} </h1>
-  <p> Pick again to continue or </p>
-  <button  (click)="reset()" mat-raised-button  color="primary"> Reset score</button>
-</div>
+<section class="page">
+  <header class="page-header">
+    <a class="back" [routerLink]="['/']"><i class="material-icons">arrow_back</i> All games</a>
+    <h1>Rock Paper Scissors</h1>
+    <p class="subtitle">{{ hint }}</p>
+  </header>
 
-<div class="result-container" *ngIf="loading">
-  <mat-spinner></mat-spinner>
-</div>
+  <div class="scoreboard">
+    <div class="score-item you">
+      <span class="label">You</span>
+      <span class="value">{{ score.human }}</span>
+    </div>
+    <div class="score-item draw">
+      <span class="label">Ties</span>
+      <span class="value">{{ score.tie }}</span>
+    </div>
+    <div class="score-item ai">
+      <span class="label">AI</span>
+      <span class="value">{{ score.ai }}</span>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="control-group">
+      <span class="control-label">AI mode</span>
+      <div class="segmented">
+        <button *ngFor="let d of difficulties" type="button"
+                [class.active]="difficulty === d.value"
+                (click)="setDifficulty(d.value)">{{ d.label }}</button>
+      </div>
+    </div>
+    <div class="control-group">
+      <span class="control-label">Match</span>
+      <div class="segmented">
+        <button *ngFor="let t of targets" type="button"
+                [class.active]="target === t"
+                (click)="setTarget(t)">{{ t ? 'First to ' + t : 'Endless' }}</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Arena -->
+  <div class="arena">
+    <div class="hand you" [class.winner]="lastRound?.outcome === 'win' && phase !== 'reveal'">
+      <span class="who">You</span>
+      <i class="fa" [ngClass]="iconFor(humanMove)" [class.shake]="phase === 'reveal'"></i>
+      <span class="name">{{ moveName(humanMove) || '—' }}</span>
+    </div>
+
+    <div class="versus">
+      <ng-container [ngSwitch]="phase">
+        <span *ngSwitchCase="'reveal'" class="countdown">{{ countdown }}</span>
+        <ng-container *ngSwitchCase="'pick'">
+          <span class="vs">VS</span>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <span class="outcome" [ngClass]="lastRound?.outcome">
+            {{ lastRound?.outcome === 'win' ? 'You win!' : lastRound?.outcome === 'lose' ? 'AI wins' : 'Tie' }}
+          </span>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <div class="hand ai" [class.winner]="lastRound?.outcome === 'lose' && phase !== 'reveal'">
+      <span class="who">AI</span>
+      <i class="fa" [ngClass]="phase === 'reveal' ? 'fa-hand-rock-o' : iconFor(aiMove)" [class.shake]="phase === 'reveal'"></i>
+      <span class="name">{{ phase === 'reveal' ? '…' : (moveName(aiMove) || '—') }}</span>
+    </div>
+  </div>
+
+  <p class="insight" *ngIf="(phase === 'result' || phase === 'matchOver') && lastPrediction !== null && difficulty !== 'random'">
+    <i class="material-icons">psychology</i>
+    The AI expected <strong>{{ moveName(lastPrediction) }}</strong>
+    {{ lastPrediction === humanMove ? '— it read you correctly.' : '— you surprised it.' }}
+  </p>
+
+  <!-- Match over banner -->
+  <div class="match-over" *ngIf="phase === 'matchOver'">
+    <h2>{{ matchWinner === 'human' ? 'You won the match! 🏆' : 'The AI won the match' }}</h2>
+    <p>Final score {{ score.human }} – {{ score.ai }}</p>
+    <button mat-raised-button color="primary" (click)="newMatch()">Play another match</button>
+  </div>
+
+  <!-- Move picker -->
+  <div class="picker" *ngIf="phase !== 'matchOver'">
+    <p class="picker-label">{{ phase === 'pick' ? 'Choose your move' : 'Pick again to play the next round' }}</p>
+    <div class="choices">
+      <button *ngFor="let m of moves" type="button" class="choice"
+              [class.selected]="humanMove === m.value && phase !== 'pick'"
+              [disabled]="phase === 'reveal'"
+              (click)="play(m.value)">
+        <i class="fa" [ngClass]="m.icon"></i>
+        <span>{{ m.name }}</span>
+        <kbd>{{ m.key }}</kbd>
+      </button>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="history" *ngIf="history.length">
+    <span class="control-label">Last rounds</span>
+    <div class="history-row">
+      <span *ngFor="let r of recentRounds" class="chip" [ngClass]="r.outcome"
+            [title]="moveName(r.human) + ' vs ' + moveName(r.ai)">
+        <i class="fa" [ngClass]="iconFor(r.human)"></i>
+        <small>v</small>
+        <i class="fa" [ngClass]="iconFor(r.ai)"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button mat-button (click)="newMatch()">Reset match</button>
+  </div>
+</section>

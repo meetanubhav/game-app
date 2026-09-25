@@ -1,58 +1,31 @@
-.ttt-container{
-    /* margin: 2em; */
-    width: 25%;
-    margin-left: 37%;
-    margin-top: 2rem;
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: min(360px, 100%);
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
 }
-.ttt-score-board{
-    display: flex;
-    margin-left: 42%;
-    margin-top: 1rem;
+.cell {
+  position: relative;
+  border: 0;
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  font: 700 3.2rem Roboto, sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .12s, background .2s, opacity .2s;
+  min-height: 90px;
 }
-mat-chip-list{
-    margin-left: 2em;
-    margin-right: 2em;
-}
-/* .border{
-    border-style: solid;
-  border-width: medium;
-} */
-mat-grid-tile{
-    border-style: solid;
-  border-width: medium;
-
-}
-mat-chip{
-  font-size: x-large;
-  padding: 18.5px;
-}
-.player1Bg{
-  background: #ff4081;
-}
-.Player2Bg{
-  background: lightblue;
-}
-/* .game-over{
-  margin-left: 4%;
-  margin-top: 5%;
-  font-weight: 500;
-  text-align: center;
-} */
-.game-status{
-  width: fit-content;
-    margin-left: 12%;
-    margin-top: 10%;
-    position: absolute;
-    font-size: 2rem;
-}
-.game-status > h3{
-  font-size: x-large;
-  text-align: center;
-}
-.reset-button{
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-left: 1.4em;
-  padding-right: 1.4em;
-  margin: 1rem;
-}
+.cell:not(:disabled):hover { background: var(--primary-soft); transform: translateY(-2px); }
+.board.locked .cell { cursor: default; }
+.cell:disabled { cursor: default; color: inherit; }
+.cell.x { color: var(--you); }
+.cell.o { color: var(--ai); }
+.cell .mark { animation: pop .25s ease-out; }
+.cell.last { outline: 2px solid var(--border); }
+.cell.win.x { background: var(--you-soft); }
+.cell.win.o { background: var(--ai-soft); }
+.cell.win { transform: scale(1.04); }
+.cell.dim { opacity: .45; }
