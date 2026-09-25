@@ -1,30 +1,26 @@
-<div class="flex-box">
-  <mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-title>
-        <h3>
-          ROCK PAPER SCISSOR
-        </h3>
-      </mat-card-title>
-    </mat-card-header>
-    <img mat-card-lg-image src="../../assets/Image/rps_game.JPG" alt="Rock Paper Scissor Image">
-    <mat-card-actions>
-      <button mat-raised-button color="primary" [routerLink]="['/rock-paper-scissor']">Play</button>
-    </mat-card-actions>
-  </mat-card>
-  
-  <!-- second game -->
-  <mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-title>
-        <h3>
-          TIC TAC TOE
-        </h3>
-      </mat-card-title>
-    </mat-card-header>
-    <img mat-card-lg-image src="../../assets/Image/ttt_game.JPG" alt="Rock Paper Scissor Image">
-    <mat-card-actions>
-      <button mat-raised-button color="primary" [routerLink]="['/tic-tac-toe']">Play</button>
-    </mat-card-actions>
-  </mat-card>
+<section class="hero">
+  <h1>Pick a game</h1>
+  <p>Challenge an AI that actually thinks — it learns your habits and plays to win.</p>
+</section>
+
+<div class="game-grid">
+  <a class="game-card" [routerLink]="['/rock-paper-scissor']">
+    <img src="assets/Image/rps_game.JPG" alt="Rock Paper Scissors">
+    <div class="card-body">
+      <h2>Rock Paper Scissors</h2>
+      <p>An adaptive AI spots your patterns and counters them. Can you stay unpredictable?</p>
+      <div class="tags"><span>Pattern learning</span><span>Match mode</span></div>
+      <span class="play">Play <i class="material-icons">arrow_forward</i></span>
+    </div>
+  </a>
+
+  <a class="game-card" [routerLink]="['/tic-tac-toe']">
+    <img src="assets/Image/ttt_game.JPG" alt="Tic Tac Toe">
+    <div class="card-body">
+      <h2>Tic Tac Toe</h2>
+      <p>Four difficulty levels, from friendly to a perfect minimax opponent that never loses.</p>
+      <div class="tags"><span>Minimax AI</span><span>4 levels</span></div>
+      <span class="play">Play <i class="material-icons">arrow_forward</i></span>
+    </div>
+  </a>
 </div>
