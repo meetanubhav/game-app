@@ -36,7 +36,8 @@ export class RpsGameComponent implements OnDestroy {
   private timers: any[] = [];
 
   get hint(): string {
-    return this.difficulties.find(d => d.value === this.difficulty).hint;
+    const mode = this.difficulties.find(d => d.value === this.difficulty);
+    return mode ? mode.hint : '';
   }
 
   get recentRounds(): Round[] {
