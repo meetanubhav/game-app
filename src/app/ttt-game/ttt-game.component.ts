@@ -49,8 +49,8 @@ export class TttGameComponent implements OnDestroy {
 
   play(index: number): void {
     if (this.status !== 'human' || this.board[index] !== null) { return; }
-    this.place(index, this.human);
-    if (this.status !== 'over') { this.queueAiMove(); }
+    const gameOver = this.place(index, this.human);
+    if (!gameOver) { this.queueAiMove(); }
   }
 
   newRound(): void {
@@ -82,19 +82,20 @@ export class TttGameComponent implements OnDestroy {
     this.aiTimer = setTimeout(() => {
       const move = chooseAiMove(this.board, this.ai, this.difficulty);
       if (move === -1) { return; }
-      this.place(move, this.ai);
-      if (this.status !== 'over') {
+      const gameOver = this.place(move, this.ai);
+      if (!gameOver) {
         this.status = 'human';
         this.message = 'Your move';
       }
     }, 450 + Math.random() * 350);
   }
 
-  private place(index: number, player: 'X' | 'O'): void {
+  /** Places a mark; returns true if this move ended the game. */
+  private place(index: number, player: 'X' | 'O'): boolean {
     this.board[index] = player;
     this.lastMove = index;
     const result = evaluateBoard(this.board);
-    if (!result) { return; }
+    if (!result) { return false; }
 
     this.status = 'over';
     this.winLine = result.line;
@@ -108,6 +109,7 @@ export class TttGameComponent implements OnDestroy {
       this.score.ai++;
       this.message = 'AI wins this round';
     }
+    return true;
   }
 
   ngOnDestroy(): void {
