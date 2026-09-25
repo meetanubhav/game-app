@@ -1,0 +1,39 @@
+name: Build and deploy to GitHub Pages
+
+on:
+  push:
+    branches: [convergence]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npx ng build --prod --base-href https://meetanubhav.github.io/game-app/
+
+      - name: SPA fallback for deep links
+        run: cp dist/game-app/index.html dist/game-app/404.html
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/game-app
+          commit_message: "Deploy ${{ github.sha }} from ${{ github.ref_name }}"
